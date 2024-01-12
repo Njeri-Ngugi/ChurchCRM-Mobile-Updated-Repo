@@ -3,6 +3,59 @@ import {
 } from "react-native";
 
 const styles = StyleSheet.create({
+  // Landing Page
+  img_view: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  img: {
+    marginTop: 60,
+    width: 150,
+    height: 150,
+    resizeMode: "contain",
+  },
+  verse_view: {
+    paddingTop: 30,
+    paddingBottom: 40,
+    alignItems: "center",
+  },
+  verse_text: {
+    fontSize: 18,
+    fontFamily: "sans-serif",
+    marginBottom: 20,
+    marginHorizontal: 10,
+  },
+  verse: {
+    fontFamily: "sans-serif",
+    fontSize: 18,
+    fontStyle: "italic",
+    fontWeight: "900",
+    alignSelf: "flex-start",
+    marginHorizontal: 30,
+  },
+  auth_btn: {
+    alignItems: "center",
+  },
+  authentication_buttons: {
+    paddingVertical: 10,
+    backgroundColor: "#0A7E8B",
+    borderRadius: 20,
+    width: "90%",
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  auth_btn_text: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "700"
+  },
+  forgot_password: {
+    fontSize: 16,
+    marginTop: 10,
+    fontWeight: "800",
+  },
 
   inputContainer: {
     flexDirection: "col",
@@ -59,7 +112,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   loadingText: {
-    fontSize: 32,
+    fontSize: 24,
     fontWeight: "800",
     color: "#087E8B"
   },
@@ -80,7 +133,7 @@ const styles = StyleSheet.create({
   },
   notesInput: {
     flex: 1,
-    height: 150,
+    height: 40,
     borderWidth: 1,
     borderColor: "#707070",
     borderRadius: 5,
@@ -95,7 +148,7 @@ const styles = StyleSheet.create({
     color: "#414141"
   },
   notesTextArea: {
-    height: 100,
+    height: 200,
     flex: 1,
     borderWidth: 1,
     borderColor: "#707070",

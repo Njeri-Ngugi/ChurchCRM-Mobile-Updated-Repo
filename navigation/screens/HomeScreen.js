@@ -8,14 +8,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { styles } from "../../assets/css/HomeScreen";
-import { NavigationContainer } from "@react-navigation/native";
+import { useNavigation, NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-
 const Stack = createStackNavigator();
 
-export default function HomeScreen({ navigation }) {
-  const BASE_URL = "https://39af-197-232-61-198.ngrok-free.app/api/";
-  const FILe_BASE = "https://39af-197-232-61-198.ngrok-free.app";
+export default function HomeScreen({ FILE_BASE }) {
   const [sermonsData, setSermonsData] = useState([]);
   const [sermonNotesData, setSermonNotesData] = useState([]);
 
@@ -25,9 +22,10 @@ export default function HomeScreen({ navigation }) {
   const [sermonNotesLoading, setsermonNotesLoading] = useState(true);
 
   const [AnnouncementsLoading, setAnnouncementsLoading] = useState(true);
+  const navigation = useNavigation();
 
   const generateUrl = (endpoint) => {
-    return `${BASE_URL}${endpoint}`;
+    return `${FILE_BASE}/api/${endpoint}`;
   };
 
   const sermonsUrl = generateUrl("fetchSermons");
@@ -94,7 +92,7 @@ export default function HomeScreen({ navigation }) {
 
         <ScrollView horizontal={true}>
           {AnnouncementsLoading ? (
-            <Text>Loading Announcements...</Text>
+            <Text style={styles.loadingText}>Loading Announcements...</Text>
           ) : (
             AnnouncementsData.map((announcements) => (
               <TouchableOpacity
@@ -102,33 +100,25 @@ export default function HomeScreen({ navigation }) {
                 onPress={() =>
                   navigation.navigate("AnnouncementView", {
                     announcement: announcements,
-                    imageUri: `${FILe_BASE}Announcements/${announcements.poster}`,
+                    imageUri: `${FILE_BASE}/Announcements/${announcements.poster}`,
                   })
                 }
               >
-                <View>
-                  <View style={{ flexDirection: "row", padding: 10 }}>
-                    <View style={{ marginRight: 10 }}>
-                      <Image
-                        style={styles.image}
-                        source={{
-                          uri: `${FILe_BASE}Announcements/${announcements.poster}`,
-                        }}
-                      />
-                      <Text>
-                        {new Date(announcements.created_at).toLocaleDateString(
-                          undefined,
-                          {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          }
-                        )}
-                      </Text>
-                      <Text>{announcements.Topic}</Text>
-                      <Text>{announcements.Message}</Text>
-                    </View>
+                <View style={{ marginRight: 10 }}>
+                  <View>
+                    <Image
+                      style={styles.sermonImage}
+                      source={{
+                        uri: `${FILE_BASE}/Announcements/${announcements.poster}`,
+                      }}
+                    />
+                    <View style={styles.overlay}></View>
                   </View>
+                  <Text style={styles.sermonDateText}>
+                    {new Date(announcements.created_at).toDateString()
+                    }
+                  </Text>
+                  <Text style={styles.sermonTopic}>{announcements.Topic}</Text>
                 </View>
               </TouchableOpacity>
             ))
@@ -137,40 +127,31 @@ export default function HomeScreen({ navigation }) {
         <Text style={styles.headingText}>Sermons</Text>
         <ScrollView horizontal={true}>
           {sermonsLoading ? (
-            <Text>Loading sermons...</Text>
+            <Text style={styles.loadingText}>Loading sermons...</Text>
           ) : (
             sermonsData.map((sermon) => (
               <TouchableOpacity
-                  key={sermon.id}
-                  onPress={() =>
-                    navigation.navigate("VideoPlayer", { sermon: sermon, })
-                  }
-                >
+                key={sermon.id}
+                onPress={() =>
+                  navigation.navigate("VideoPlayer", { sermon: sermon, })
+                }
+              >
+                <View style={{ marginRight: 10 }}>
                   <View>
-                    <View style={{ flexDirection: "row", padding: 10 }}>
-                      <View style={{ marginRight: 10 }}>
-                        <Image
-                          style={styles.image}
-                          source={{
-                            uri: `${FILe_BASE}SermonThumbnails/${sermon.Thumbnail}`,
-                          }}
-                        />
-                        <Text>
-                          {new Date(sermon.created_at).toLocaleDateString(
-                            undefined,
-                            {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            }
-                          )}
-                        </Text>
-                        <Text>{sermon.Thumbnail}</Text>
-                        <Text>{sermon.Message}</Text>
-                      </View>
-                    </View>
+                    <Image
+                      style={styles.sermonImage}
+                      source={{
+                        uri: `${FILE_BASE}/SermonThumbnails/${sermon.Thumbnail}`,
+                      }}
+                    />
+                    <View style={styles.overlay}></View>
                   </View>
-                </TouchableOpacity>
+                  <Text style={styles.sermonDateText}>{new Date(sermon.created_at).toDateString()}</Text>
+                  <Text style={styles.sermonTopic}>{sermon.Title}</Text>
+                </View>
+
+
+              </TouchableOpacity>
             ))
           )}
         </ScrollView>

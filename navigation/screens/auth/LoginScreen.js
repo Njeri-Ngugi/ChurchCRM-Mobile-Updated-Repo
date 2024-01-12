@@ -15,7 +15,7 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
 
-export default function LoginScreen( {setUserId}) {
+export default function LoginScreen( {setUserId, FILE_BASE}) {
   const styles = StyleSheet.create({
     img_view: {
       flex: 1,
@@ -26,7 +26,6 @@ export default function LoginScreen( {setUserId}) {
     img: {
       width: 150,
       height: 150,
-      // resizeMode: "contain",
     },
 
     login_view: {
@@ -85,7 +84,7 @@ export default function LoginScreen( {setUserId}) {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post("https://39af-197-232-61-198.ngrok-free.app/api/login", {
+      const response = await axios.post(`${FILE_BASE}/api/login`, {
         email,
         password
       });
@@ -173,10 +172,10 @@ export default function LoginScreen( {setUserId}) {
             >
               Forgot password?
             </Text>
-            <Text onPress={ProfileScreen}>ProfileScreen</Text>
+            {/* <Text onPress={ProfileScreen}>ProfileScreen</Text>
             <Text style={{ marginTop: 20 }} onPress={SettingScreen}>
               SettingScreen
-            </Text>
+            </Text> */}
           </SafeAreaView>
         </View>
       </ScrollView>

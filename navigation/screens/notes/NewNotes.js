@@ -12,7 +12,7 @@ import Icon from "react-native-vector-icons/MaterialIcons";
 import { styles } from "../../../assets/css/styles";
 import axios from "axios";
 
-export default function NewNotes({ userId }) {
+export default function NewNotes({ userId, FILE_BASE}) {
   const [note_topic, setTopic] = useState("");
   const [content, setContent] = useState("");
   const navigation = useNavigation();
@@ -22,7 +22,7 @@ export default function NewNotes({ userId }) {
       console.log("The content: ", note_topic, content)
       const user_id_fk = userId
       const response = await axios.post(
-        "https://2b2c-197-232-61-232.ngrok-free.app/api/newNotes",
+        `${FILE_BASE}/api/newNotes`,
         {
           user_id_fk,
           note_topic,

@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialIcons";
 
-export default function ProfileScreen({ navigation, userId }) {
+export default function ProfileScreen({userId, FILE_BASE }) {
   const styles = StyleSheet.create({
     scrollViewContainer: {
       flex: 1,
@@ -63,10 +63,9 @@ export default function ProfileScreen({ navigation, userId }) {
     if (userId) {
       console.log(userId);
       axios
-        .get(`https://3829-197-232-61-194.ngrok-free.app/api/profile/${userId}`)
+        .get(`${FILE_BASE}/api/profile/${userId}`)
         .then((response) => {
           setData(response.data);
-          console.log(response.data);
         })
         .catch((error) => {
           console.log("Error exists: ", error);

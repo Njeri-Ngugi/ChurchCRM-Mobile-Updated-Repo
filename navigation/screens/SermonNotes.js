@@ -14,7 +14,7 @@ import { styles } from "../../assets/css/styles";
 import axios from "axios";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function SermonNotes({ route }) {
+export default function SermonNotes({ route, thisSermon, FILE_BASE }) {
     const navigation = useNavigation();
 
     const [note_topic, setTopic] = useState("");
@@ -26,11 +26,10 @@ export default function SermonNotes({ route }) {
 
     const [sermonColor, setSermonColor] = useState("");
     const [notesColor, setNotesColor] = useState("");
-    const FILE_BASE = "https://39af-197-232-61-198.ngrok-free.app";
 
-    const { sermonId } = route.params;
-
-    const url = `${FILE_BASE}/api/fetch/sermonNotes/${sermonId}`;
+    // Check if route and route.params are defined
+   
+    const url = `${FILE_BASE}/api/fetch/sermonNotes/${thisSermon}`;
 
     const handleSermonNotes = (activeColor) => {
         // Toggling color for take notes and active sermon notes
@@ -43,15 +42,18 @@ export default function SermonNotes({ route }) {
         else {
             setSermonColor("#087E8B")
             setNotesColor("#000000")
+            // Setting read only text
             setEditableText(false)
+
             // Displaying the sermon notes
             setContent(data.text)   
         }
     };
 
     useEffect(() => {
-
         handleSermonNotes(true)
+        
+        console.log(thisSermon)
 
         fetch(url)
             .then((response) => response.json())
@@ -77,7 +79,7 @@ export default function SermonNotes({ route }) {
             const user_id_fk = userId
 
             const response = await axios.post(
-                "https://3829-197-232-61-194.ngrok-free.app/api/newNotes",
+                `${FILE_BASE}/api/newNotes`,
                 {
                     user_id_fk,
                     note_topic,

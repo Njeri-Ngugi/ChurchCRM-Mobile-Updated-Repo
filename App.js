@@ -23,8 +23,9 @@ const Stack = createStackNavigator();
 
 function App() {
   const [userId, setUserId] = useState(null);
-  
- 
+  const FILE_BASE = "https://e941-197-232-61-224.ngrok-free.app";
+  const [thisSermon, setThisSermon] = useState(null)
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="LandingScreen">
@@ -33,13 +34,13 @@ function App() {
           component={LandingScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="LoginScreen" children={() => <LoginScreen setUserId={setUserId}/>} />
-        <Stack.Screen name="SignupScreen" component={SignupScreen} />
-        <Stack.Screen name="MainContainer" children={() => <MainContainer userId={userId} />} options={{ headerShown: false }} />
-        <Stack.Screen name="ProfileScreen" children={() => <ProfileScreen userId={userId} />} />
-        <Stack.Screen name="SettingScreen" component={SettingScreen} />
-        <Stack.Screen name="NewNotes" children={() => <NewNotes userId={userId} />} />
-        <Stack.Screen name="SermonNotes" component={SermonNotes} />
+        <Stack.Screen name="LoginScreen" children={() => <LoginScreen setUserId={setUserId} FILE_BASE={FILE_BASE} />} />
+        <Stack.Screen name="SignupScreen" children={() => <SignupScreen FILE_BASE={FILE_BASE} />} />
+        <Stack.Screen name="MainContainer" children={() => <MainContainer userId={userId} FILE_BASE={FILE_BASE} setThisSermon={setThisSermon} />} options={{ headerShown: false }} />
+        <Stack.Screen name="ProfileScreen" children={() => <ProfileScreen userId={userId} FILE_BASE={FILE_BASE} />} />
+        <Stack.Screen name="SettingScreen" children={() => <SettingScreen FILE_BASE={FILE_BASE} />} />
+        <Stack.Screen name="NewNotes" children={() => <NewNotes userId={userId} FILE_BASE={FILE_BASE} />} />
+        <Stack.Screen name="SermonNotes" children={() => <SermonNotes userId={userId} FILE_BASE={FILE_BASE} thisSermon={thisSermon} />} />
 
         <Stack.Screen name="DocumentViewer" component={DocumentViewer} />
         <Stack.Screen name="EventsScreen" component={EventsScreen} />
@@ -48,7 +49,7 @@ function App() {
 
       </Stack.Navigator>
     </NavigationContainer>
-   
+
   );
 }
 

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import HomeScreen from './screens/HomeScreen';
@@ -14,7 +15,7 @@ const more = 'More';
 
 const Tab = createBottomTabNavigator();
 
-export default function MainContainer( {userId}) {
+export default function MainContainer( {userId, FILE_BASE, thisSermon, setThisSermon}) {
   return (
     <Tab.Navigator
       initialRouteName="Home"
@@ -49,10 +50,10 @@ export default function MainContainer( {userId}) {
         },
       }}
     >
-      <Tab.Screen name="Home" component={HomeScreen} options={{ tabBarVisible: false }} />
-      <Tab.Screen name="Sermons" children={() => <SermonsScreen userId={userId} />} />
-      <Tab.Screen name="Notes" children={() => <Notes userId={userId} />} />
-      <Tab.Screen name="More" children={() => <More userId={userId}/>} />
+      <Tab.Screen name="Home" children={() => <HomeScreen FILE_BASE={FILE_BASE} />} options={{ tabBarVisible: false }} />
+      <Tab.Screen name="Sermons" children={() => <SermonsScreen userId={userId} FILE_BASE={FILE_BASE} thisSermon={thisSermon} setThisSermon={setThisSermon} />} />
+      <Tab.Screen name="Notes" children={() => <Notes userId={userId} FILE_BASE={FILE_BASE} />} />
+      <Tab.Screen name="More" children={() => <More userId={userId} FILE_BASE={FILE_BASE}/>} />
     </Tab.Navigator>
   );
 }

@@ -15,7 +15,7 @@ import { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 
 
-export default function Notes({ userId }) {
+export default function Notes({ userId, FILE_BASE }) {
   const navigation = useNavigation();
 
   const NewNoteScreen = () => {
@@ -36,7 +36,7 @@ export default function Notes({ userId }) {
       try {
         const fetchData = async () => {
           const response = await axios.get(
-            `https://39af-197-232-61-198.ngrok-free.app/api/showNotes/${userId}`
+            `${FILE_BASE}/api/showNotes/${userId}`
           );
           setData(response.data);
         };

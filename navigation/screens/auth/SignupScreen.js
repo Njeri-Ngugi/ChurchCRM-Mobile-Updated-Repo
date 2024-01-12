@@ -16,7 +16,7 @@ import {
 import Icon from "react-native-vector-icons/MaterialIcons";
 import { useNavigation } from "@react-navigation/native";
 
-export default function SignupScreen() {
+export default function SignupScreen({FILE_BASE}) {
   const navigation = useNavigation();
 
   const styles = StyleSheet.create({
@@ -89,7 +89,7 @@ export default function SignupScreen() {
   const handleRegister = async () => {
     try {
       const response = await axios.post(
-        "https://2b2c-197-232-61-232.ngrok-free.app/api/register",
+        `${FILE_BASE}/api/register`,
         {
           name,
           email,
