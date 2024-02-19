@@ -25,7 +25,7 @@ export default function Announcements() {
     };
 
     fetchData();
-  }, []);
+  }, [announcementsData]);
 
   const navigation = useNavigation();
 

@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   },
   dataTopic: {
     color: '#000000',
-    fontSize: 2,
+    fontSize: 20,
     fontWeight: '600',
     paddingTop: 0,
     // borderBottomColor:

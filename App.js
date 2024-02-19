@@ -32,22 +32,47 @@ function App() {
   const { getStoredUserData } = useAuth();
   const [userId, setUserId] = useState();
   const [noteId, setNoteId] = useState(null);
+  const [token, setToken] = useState();
+  const [loginTime, setLoginTime] = useState();
 
   useEffect(() => {
+    const get_time = new Date();
+    const time_out = 21600000 
+
     const fetchUserId = async () => {
       const storedUserData = await getStoredUserData();
-      // console.log(storedUserData);
 
-      if (storedUserData && storedUserData.retrieved_userId) {
+      if (storedUserData && storedUserData.retrieved_userId && storedUserData.retrieved_token && storedUserData.retrieved_time) {
         setUserId(storedUserData.retrieved_userId);
+
+        setTimeout(async () => {
+          const time_now = new Date();
+          const time_diff = (time_now.getTime() - storedUserData.retrieved_time) / 1000;
+      
+          if (time_diff > time_out) {
+            const { handleLogout } = useAuth();
+            console.log("Logging out")
+            try {
+              const { logout_ID, logout_Token } = await handleLogout();
+              setUserId(logout_ID);
+              setToken(logout_Token);
+            } catch (error) {
+              console.error('Error signing out:', error);
+            }
+          }
+          else {
+            console.log("Current time difference: ", time_diff)
+          }
+        }, time_out)
         // console.log(storedUserData);
       } else {
         setUserId(null);
+        setToken(null);
       }
     };
 
     fetchUserId();
-  }, [getStoredUserData]);
+  }, [userId, token]);
 
   const Stack = createStackNavigator();
   return (
@@ -69,7 +94,7 @@ function App() {
               <Stack.Screen
                 name="LoginScreen"
                 children={() => (
-                  <LoginScreen setUserId={setUserId} userId={userId} />
+                  <LoginScreen setUserId={setUserId} userId={userId} setToken={setToken} token={token} setLoginTime={setLoginTime} loginTime={loginTime} />
                 )}
                 options={{ title: 'Login' }}
               />
@@ -109,7 +134,7 @@ function App() {
                 )}
                 options={{ headerShown: false, title: '' }}
               />
-              
+
               <Stack.Screen
                 name="ProfileScreen"
                 children={() => (
@@ -194,38 +219,59 @@ function App() {
               <Stack.Screen
                 name="EventView"
                 component={EventView}
-                options={{ title: 'Event',
+                options={{
+                  title: 'Event',
                   headerStyle: {
                     backgroundColor: '#087E8B',
                     height: 50,
-                  }, }}
+                  },
+                }}
               />
               <Stack.Screen
                 name="VideoPlayer"
                 component={VideoPlayer}
-                options={{ 
-                  title: 'Sermon', 
+                options={{
+                  title: 'Sermon',
                   headerStyle: {
                     backgroundColor: '#087E8B',
                     height: 50,
-                  }, }}
+                  },
+                }}
               />
               <Stack.Screen
                 name="SavedSermonsScreen"
                 component={SermonScreen}
-                options={{ 
+                options={{
                   title: 'Sermons',
                   headerStyle: {
                     backgroundColor: '#087E8B',
                     height: 50,
-                  }, }}
+                  },
+                }}
               />
               <Stack.Screen name="VerseOfDayScreen" component={VerseOfTheDay} />
               <Stack.Screen
                 name="SermonNotesView"
                 component={SermonNotesView}
+                options={{
+                  title: 'Sermon Notes',
+                  headerStyle: {
+                    backgroundColor: '#087E8B',
+                    height: 50,
+                  },
+                }}
               />
-              <Stack.Screen name="ChangePassword" component={ChangePassword} />
+              <Stack.Screen
+                name="ChangePassword"
+                component={ChangePassword}
+                options={{
+                  title: 'Reset Password',
+                  headerStyle: {
+                    backgroundColor: '#087E8B',
+                    height: 50,
+                  },
+                }}
+              />
             </>
           )}
         </Stack.Navigator>
