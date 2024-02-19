@@ -116,12 +116,34 @@ const useAuth = () => {
       throw error;
     }
   };
+  const HandleDeletion = async () => {
+    try {
+      userId = await AsyncStorage.getItem('userId');
+
+      const response = await fetch(`${BASE_URL}/api/login/${userId}`, {
+        method: 'POST',
+        headers: config,
+        body: JSON.stringify({userId}),
+      });
+
+      if (response.ok) {
+        let del = null;
+        return {del};
+      } else {
+        return null;
+      }
+    } catch (error) {
+      console.error('Error getting stored user data:', error);
+      return null;
+    }
+  };
   return {
     handleLogin,
     handleLogout,
     getStoredUserData,
     handleChangePassword,
     handleResetPassword,
+    HandleDeletion,
   };
 };
 

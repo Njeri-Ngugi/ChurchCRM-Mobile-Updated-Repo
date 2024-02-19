@@ -27,7 +27,7 @@ import useAuth from '../../hooks/HandleAuth';
 
 export default function ProfileScreen({userId, setUserId}) {
   const navigation = useNavigation();
-  const {handleLogout} = useAuth();
+  const {handleLogout, HandleDeletion} = useAuth();
   const [data, setData] = useState([]);
   const appSnackbarRef = useRef();
   // dropdown selection
@@ -153,15 +153,21 @@ export default function ProfileScreen({userId, setUserId}) {
   const ChangePassword = () => {
     navigation.navigate('ChangePassword');
   };
+  // const handleSignOut = async () => {
+  //   try {
+  //     const logout = await handleLogout();
+  //     setUserId(logout.userId);
+  //   } catch (error) {
+  //     console.error('Error signing out:', error);
+  //   }
+  // };
   const AccountDeletion = async () => {
     try {
-      let response = await fetch.post(`${BASE_URL}/api/deleteuser`, {
-        userId: userId,
-      });
-      if (response.status === 200) {
-        setUserId(null);
-      }
-    } catch (error) {}
+      const accdeletion = await HandleDeletion();
+      setUserId(accdeletion.del);
+    } catch (error) {
+      console.error('deletion failed');
+    }
   };
 
   //Profile section
