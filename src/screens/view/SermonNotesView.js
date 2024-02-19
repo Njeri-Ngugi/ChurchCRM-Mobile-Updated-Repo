@@ -14,6 +14,7 @@ import React, { useState } from 'react';
 import RNFetchBlob from 'rn-fetch-blob';
 import { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
+
 export const fetchSermonsNotes = async (note_id) => {
   return fetchDataByEndpoint(`fetch_other_notes/${note_id}`);
 };
