@@ -26,18 +26,23 @@ import ChangePassword from './src/screens/auth/ChangePassword';
 import ResetCode from './src/screens/auth/ResetCode';
 import NewPassword from './src/screens/auth/NewPassword';
 import SermonScreen from './src/screens/sermons/SermonScreen';
+import SermonNoteItem from './src/screens/view/Item_Views/SermonNoteItem';
+import EventItem from './src/screens/view/Item_Views/EventItem';
 
 function App() {
   const [reloadNotes, setReloadNotes] = useState(false);
   const { getStoredUserData } = useAuth();
   const [userId, setUserId] = useState();
   const [noteId, setNoteId] = useState(null);
+  const [announcement, setAnnouncement] = useState(null);
+  const [sermonNote, setSermonNote] = useState(null);
+  const [sermon, setSermon] = useState(null);
+  const [event, setEvent] = useState(null);
   const [token, setToken] = useState();
   const [loginTime, setLoginTime] = useState();
 
   useEffect(() => {
-    const get_time = new Date();
-    const time_out = 21600000 
+    const time_out = 14400000
 
     const fetchUserId = async () => {
       const storedUserData = await getStoredUserData();
@@ -47,8 +52,8 @@ function App() {
 
         setTimeout(async () => {
           const time_now = new Date();
-          const time_diff = (time_now.getTime() - storedUserData.retrieved_time) / 1000;
-      
+          const time_diff = Math.round((time_now.getTime() - storedUserData.retrieved_time) / (1000 * 3600));
+          console.log("Current diff: ", time_diff)
           if (time_diff > time_out) {
             const { handleLogout } = useAuth();
             console.log("Logging out")
@@ -127,9 +132,15 @@ function App() {
                   <DrawerNavigator
                     userId={userId}
                     setUserId={setUserId}
-                    setReloadNotes={setReloadNotes}
                     reloadNotes={reloadNotes}
+                    setReloadNotes={setReloadNotes}
                     setNoteId={setNoteId}
+                    setAnnouncement={setAnnouncement}
+                    announcement={announcement}
+                    setSermonNote={setSermonNote}
+                    sermonNote={sermonNote}
+                    setSermon={setSermon}
+                    sermon={sermon}
                   />
                 )}
                 options={{ headerShown: false, title: '' }}
@@ -205,9 +216,20 @@ function App() {
                   },
                 }}
               />
+                <Stack.Screen
+                  name="EventsItem"
+                  component={EventItem}
+                  options={{
+                    title: 'Events',
+                    headerStyle: {
+                      backgroundColor: '#087E8B',
+                      height: 50,
+                    },
+                  }}
+                />
               <Stack.Screen
                 name="AnnouncementView"
-                component={AnnouncementView}
+                children={() => <AnnouncementView announcement={announcement} setAnnouncement={setAnnouncement} />}
                 options={{
                   title: 'Announcements',
                   headerStyle: {
@@ -216,6 +238,17 @@ function App() {
                   },
                 }}
               />
+                <Stack.Screen
+                  name="AnnouncementItem"
+                  children={() => <AnnouncementView announcement={announcement} />}
+                  options={{
+                    title: '',
+                    headerStyle: {
+                      backgroundColor: '#087E8B',
+                      height: 50,
+                    },
+                  }}
+                />
               <Stack.Screen
                 name="EventView"
                 component={EventView}
@@ -229,7 +262,7 @@ function App() {
               />
               <Stack.Screen
                 name="VideoPlayer"
-                component={VideoPlayer}
+                  children={() => <VideoPlayer sermon={sermon} setSermon={setSermon}/>}
                 options={{
                   title: 'Sermon',
                   headerStyle: {
@@ -249,10 +282,14 @@ function App() {
                   },
                 }}
               />
-              <Stack.Screen name="VerseOfDayScreen" component={VerseOfTheDay} />
+              <Stack.Screen
+                name="VerseOfDayScreen"
+                component={VerseOfTheDay}
+              />
+
               <Stack.Screen
                 name="SermonNotesView"
-                component={SermonNotesView}
+                children={() => <SermonNotesView setSermonNote={setSermonNote} sermonNote={sermonNote} />}
                 options={{
                   title: 'Sermon Notes',
                   headerStyle: {
@@ -261,6 +298,17 @@ function App() {
                   },
                 }}
               />
+                <Stack.Screen
+                  name="SermonNoteItem"
+                  children={() => <SermonNoteItem sermonNote={sermonNote} />}
+                  options={{
+                    title: '',
+                    headerStyle: {
+                      backgroundColor: '#087E8B',
+                      height: 50,
+                    },
+                  }}
+                />
               <Stack.Screen
                 name="ChangePassword"
                 component={ChangePassword}
